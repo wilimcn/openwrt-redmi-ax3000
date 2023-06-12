@@ -25,11 +25,14 @@ jobs:
 
       - name: Update and install feeds
         run: |
+          sed -i '$a src-git small8 https://github.com/kenzok8/small-package' feeds.conf.default
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Configure
         run: |
+          sed -i 's/192.168.1.1/192.168.5.1/g' package/base-files/files/bin/config_generate
+          sed -i "s/OpenWrt /$(date +%Y.%m.%d) by WINAS /g" package/lean/default-settings/files/zzz-default-settings
           cat <<EOF | sed -E 's/^  //' >.config
             CONFIG_TARGET_ipq50xx=y
             CONFIG_TARGET_ipq50xx_arm=y
@@ -39,6 +42,12 @@ jobs:
             CONFIG_REPRODUCIBLE_DEBUG_INFO=y
 
             CONFIG_PACKAGE_luci=y
+            CONFIG_PACKAGE_luci-app-socat=y
+            CONFIG_PACKAGE_luci-app-ssr-plus=y
+            CONFIG_PACKAGE_luci-app-tinyproxy=y
+            CONFIG_PACKAGE_luci-app-openvpn=y
+            CONFIG_PACKAGE_luci-app-wolplus=y
+            CONFIG_PACKAGE_luci-app-ddns-go=y
           EOF
           make defconfig
 
