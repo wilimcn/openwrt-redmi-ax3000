@@ -20,20 +20,18 @@ jobs:
       - name: Hook the openwrt_core URL for opkg
         run: |
           TIME="$(curl "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" | jq -r .created_at)"
-          echo "ci-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S')-${GITHUB_SHA:0:8}" >version
+          echo "winas-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S')-${GITHUB_SHA:0:8}" >version
           sed -i "s|%U/targets/%S/packages|https://hzyitc.github.io/openwrt-redmi-ax3000/${GITHUB_REF_NAME}/%R|" include/feeds.mk
 
       - name: 自定义插件
         run: |
-          cd package
-          mkdir packages
-          cd packages
-          git clone https://github.com/xiaorouji/openwrt-passwall.git
+
       
       - name: Update and install feeds
         run: |
-          sed -i "/helloworld/d" "feeds.conf.default"
-          echo "src-git helloworld https://github.com/fw876/helloworld.git" >> "feeds.conf.default"
+          sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+          sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
+          git pull
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
