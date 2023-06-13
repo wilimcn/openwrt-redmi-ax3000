@@ -23,9 +23,17 @@ jobs:
           echo "ci-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S')-${GITHUB_SHA:0:8}" >version
           sed -i "s|%U/targets/%S/packages|https://hzyitc.github.io/openwrt-redmi-ax3000/${GITHUB_REF_NAME}/%R|" include/feeds.mk
 
+      - name: 自定义插件
+        run: |
+          cd package
+          mkdir packages
+          cd packages
+          git clone https://github.com/xiaorouji/openwrt-passwall.git
+      
       - name: Update and install feeds
         run: |
-          sed -i '$a src-git ken https://github.com/xiaorouji/openwrt-passwall' feeds.conf.default
+          sed -i "/helloworld/d" "feeds.conf.default"
+          echo "src-git helloworld https://github.com/fw876/helloworld.git" >> "feeds.conf.default"
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -42,6 +50,7 @@ jobs:
             CONFIG_REPRODUCIBLE_DEBUG_INFO=y
 
             CONFIG_PACKAGE_luci=y
+            
             CONFIG_PACKAGE_luci-app-socat=y
             CONFIG_PACKAGE_luci-app-ssr-plus=y
             CONFIG_PACKAGE_luci-app-tinyproxy=y
