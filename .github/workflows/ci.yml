@@ -21,7 +21,7 @@ jobs:
         run: |
           TIME="$(curl "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" | jq -r .created_at)"
           echo "winas-$(date -d "${TIME}" -u +'%Y%m%d-%H%M%S')-${GITHUB_SHA:0:8}" >version
-          sed -i "s|%U/targets/%S/packages|https://hzyitc.github.io/openwrt-redmi-ax3000/${GITHUB_REF_NAME}/%R|" include/feeds.mk
+          sed -i "s|%U/targets/%S/packages|https://wilimcn.github.io/openwrt-redmi-ax3000/${GITHUB_REF_NAME}/%R|" include/feeds.mk
 
       - name: 自定义插件
         run: |
@@ -29,9 +29,9 @@ jobs:
       
       - name: Update and install feeds
         run: |
-          sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-          sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
-          git pull
+          #sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+          #sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
+          #git pull
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -71,7 +71,7 @@ jobs:
 
       - name: Build all
         run: |
-          make -j1 V=s
+          make -j$(nproc) || make -j1 V=s
 
       - name: Upload bin to artifacts
         uses: actions/upload-artifact@v3
