@@ -48,12 +48,14 @@ jobs:
 
             CONFIG_PACKAGE_luci=y
             
+            CONFIG_PACKAGE_luci-app-dnsmasq-full=y
             CONFIG_PACKAGE_luci-app-socat=y
-            CONFIG_PACKAGE_luci-app-ssr-plus=y
+            #CONFIG_PACKAGE_luci-app-bypass=y
             CONFIG_PACKAGE_luci-app-tinyproxy=y
-            CONFIG_PACKAGE_luci-app-openvpn=y
+            #CONFIG_PACKAGE_luci-app-openvpn=y
             CONFIG_PACKAGE_luci-app-wolplus=y
             CONFIG_PACKAGE_luci-app-ddns-go=y
+            
           EOF
           make defconfig
 
