@@ -43,10 +43,16 @@ jobs:
             CONFIG_TARGET_ipq50xx_arm=y
             CONFIG_TARGET_ipq50xx_arm_DEVICE_redmi_ax3000=y
 
+            CONFIG_IB=y
+            # CONFIG_IB_STANDALONE is not set
+            CONFIG_SDK=y
+            CONFIG_MAKE_TOOLCHAIN=y
+
             CONFIG_ALL_NONSHARED=y
             CONFIG_REPRODUCIBLE_DEBUG_INFO=y
 
             CONFIG_PACKAGE_luci=y
+
             
             CONFIG_PACKAGE_dnsmasq=n
             CONFIG_DEFAULT_dnsmasq=n
